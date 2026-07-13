@@ -83,7 +83,11 @@
             letter-spacing: 0.5px;
             color: #fff;
         }
-        .logo i { color: var(--accent-yellow); font-size: 2rem; }
+        .logo img {
+            height: 50px;
+            width: auto;
+            display: block;
+        }
         .logo span { color: var(--accent-yellow); }
         .logo .la-salle { color: #fff; }
         .logo .academy { color: var(--accent-purple); }
@@ -290,7 +294,7 @@
             outline: none;
             transition: var(--transition);
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a4a6a' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a4a6a' stroke-width='1.[...]
             background-repeat: no-repeat;
             background-position: right 12px center;
             padding-right: 2.4rem;
@@ -876,6 +880,7 @@
             .nav-links a:hover { border-bottom: none; }
             .hamburger { display: flex; }
             .admin-toggle-btn span { display: none; }
+            .logo img { height: 40px; }
             .hero h1 { font-size: 1.6rem; }
             .hero p { font-size: 0.95rem; }
             .hero-stats .number { font-size: 1.4rem; }
@@ -902,7 +907,7 @@
     <header class="header">
         <div class="header-inner">
             <div class="logo">
-                <i class="fas fa-futbol"></i>
+                <img src="https://github.com/kevinonyango9821/FOOTBALL.github.io/raw/main/logo.png" alt="La Salle Football Academy Logo" />
                 <span class="la-salle">La Salle</span>
                 <span class="academy">Academy</span>
             </div>
@@ -999,23 +1004,23 @@
                     <input type="number" id="fMinutes" placeholder="0" min="0" value="0" />
                 </div>
                 <div class="form-group">
-                    <label>Grade (A-E)</label>
-                    <input type="text" id="fGrade" placeholder="A" value="A" maxlength="1" />
+                    <label>Coach Rating</label>
+                    <input type="text" id="fGrade" placeholder="A+" value="A+" />
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="grid-column: span 1;">
                     <label>Coach Comments</label>
-                    <textarea id="fCoachComments" placeholder="Coach feedback..." rows="2"></textarea>
+                    <textarea id="fComments" placeholder="Coach evaluation..." rows="2"></textarea>
                 </div>
-                <div class="form-group">
-                    <label>Image URL</label>
-                    <input type="url" id="fImageUrl" placeholder="https://example.com/image.jpg" />
+                <div class="form-group" style="grid-column: span 1;">
+                    <label>Photo URL</label>
+                    <input type="url" id="fPhotoUrl" placeholder="https://..." />
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="grid-column: span 1;">
                     <label>Video URL</label>
-                    <input type="url" id="fVideoUrl" placeholder="https://youtube.com/watch?v=..." />
+                    <input type="url" id="fVideoUrl" placeholder="https://..." />
                 </div>
                 <button type="submit" class="submit-btn">
-                    <i class="fas fa-plus"></i> Add Player
+                    <i class="fas fa-check"></i> Add Player
                 </button>
             </form>
         </div>
@@ -1026,8 +1031,8 @@
         <div class="toolbar-inner">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search players..." />
-                <button type="button" id="searchBtn">Search</button>
+                <input type="text" id="searchInput" placeholder="Search players...">
+                <button id="searchBtn">Search</button>
             </div>
             <div class="filter-group">
                 <label><i class="fas fa-filter"></i> Filter</label>
@@ -1054,70 +1059,68 @@
     </div>
 
     <!-- ===== PLAYERS GRID ===== -->
-    <div class="players-section">
+    <section class="players-section" id="playersSection">
         <div class="section-header">
-            <h2><i class="fas fa-users"></i> Players</h2>
-            <div class="count"><span id="playerCount">0</span> players</div>
+            <h2><i class="fas fa-users"></i> Squad Directory</h2>
+            <span class="count" id="playerCount">0 players</span>
         </div>
         <div class="player-grid" id="playerGrid">
-            <!-- Players will be injected here -->
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <h3>No players yet</h3>
+                <p>Start by adding the first player to the academy!</p>
+                <div class="admin-hint">💡 Click the Admin button in the header to add players</div>
+            </div>
         </div>
-    </div>
+    </section>
 
     <!-- ===== MODAL ===== -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal" id="modal">
+    <div class="modal-overlay" id="playerModal">
+        <div class="modal">
+            <button type="button" class="close-btn" id="closeModal">&times;</button>
             <div class="modal-img" id="modalImg">
-                <span id="modalEmoji">⚽</span>
+                <i class="fas fa-futbol"></i>
+                <span class="flag-big" id="modalFlag"></span>
             </div>
-            <div class="modal-img modal-video" id="modalVideo" style="display: none;">
-                <!-- Video will be injected here -->
+            <div id="modalVideo" class="modal-video" style="display: none;">
+                <video id="playerVideo" controls></video>
             </div>
             <div class="modal-body">
-                <button class="close-btn" id="closeBtn">&times;</button>
-                <h2 id="modalName">Player Name</h2>
+                <h2 id="modalName"></h2>
                 <div class="sub">
-                    <span id="modalPosition">Position</span>
+                    <span id="modalPosition"></span>
                     <span>•</span>
-                    <span id="modalAgeGroup">Age Group</span>
-                    <span>•</span>
-                    <span id="modalNationality">Nationality</span>
+                    <span id="modalAge"></span>
                 </div>
-                <p class="full-bio" id="modalBio">Bio goes here</p>
+                <p class="full-bio" id="modalBio"></p>
                 <div class="stats-grid">
                     <div>
-                        <div class="num" id="modalGoals">0</div>
-                        <div class="lbl">Goals</div>
+                        <span class="num" id="modalGoals">0</span>
+                        <span class="lbl">Goals</span>
                     </div>
                     <div>
-                        <div class="num" id="modalAssists">0</div>
-                        <div class="lbl">Assists</div>
+                        <span class="num" id="modalAssists">0</span>
+                        <span class="lbl">Assists</span>
                     </div>
                     <div>
-                        <div class="num" id="modalAppearances">0</div>
-                        <div class="lbl">Appearances</div>
+                        <span class="num" id="modalAppearances">0</span>
+                        <span class="lbl">Apps</span>
                     </div>
                     <div>
-                        <div class="num" id="modalMinutes">0</div>
-                        <div class="lbl">Minutes</div>
+                        <span class="num" id="modalMinutes">0</span>
+                        <span class="lbl">Mins</span>
                     </div>
                 </div>
-                <div class="coach-section">
+                <div class="coach-section" id="coachSection" style="display: none;">
                     <h4>
-                        <i class="fas fa-clipboard"></i>
+                        <i class="fas fa-star"></i>
                         Coach Evaluation
-                        <span class="grade" id="modalGrade">A</span>
+                        <span class="grade" id="modalGrade"></span>
                     </h4>
-                    <p class="comments" id="modalCoachComments">Coach feedback goes here</p>
+                    <p class="comments" id="modalComments"></p>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- ===== TOAST ===== -->
-    <div class="toast" id="toast">
-        <i class="fas fa-check-circle"></i>
-        <span id="toastMessage">Success!</span>
     </div>
 
     <!-- ===== FOOTER ===== -->
@@ -1126,424 +1129,290 @@
             <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
             <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
             <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
         </div>
         <p>
-            <strong>La Salle Football Academy</strong> 🇰🇪 Kenya
+            ⚽ <strong>La Salle Football Academy</strong> - Kenya's Premier Youth Football Development Program
             <br>
-            Developing <span class="purple">Young Talent</span> | Building Champions
+            Empowering young <span class="purple">talent</span> through passion, discipline, and excellence.
         </p>
     </footer>
 
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- FIREBASE CONFIG & SCRIPTS -->
     <script>
-        // ===== DATA PERSISTENCE & STATE MANAGEMENT =====
-        class DataManager {
-            constructor() {
-                this.storageKey = 'lsfa_players';
-                this.players = [];
-                this.useFirebase = false;
-                this.db = null;
-                this.init();
-            }
+        // ===== FIREBASE CONFIG =====
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNvPmtJK_qNqkMnPqADYmzPQrVmPQrVmQ",
+            authDomain: "lasalle-academy-db.firebaseapp.com",
+            projectId: "lasalle-academy-db",
+            storageBucket: "lasalle-academy-db.appspot.com",
+            messagingSenderId: "123456789012",
+            appId: "1:123456789012:web:abcdef123456789012345"
+        };
 
-            init() {
-                this.loadLocal();
-                this.initFirebase();
-            }
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-            // Initialize Firebase (optional)
-            initFirebase() {
-                try {
-                    const firebaseConfig = {
-                        // Add your Firebase config here
-                        // apiKey: "YOUR_API_KEY",
-                        // projectId: "YOUR_PROJECT_ID",
-                        // etc.
-                    };
+        // ===== VARIABLES & HELPERS =====
+        let adminMode = false;
+        let allPlayers = [];
+        let filteredPlayers = [];
 
-                    if (firebaseConfig.projectId) {
-                        firebase.initializeApp(firebaseConfig);
-                        this.db = firebase.firestore();
-                        this.useFirebase = true;
-                        this.loadFirebase();
-                    }
-                } catch (error) {
-                    console.log('Firebase not configured. Using localStorage only.');
-                }
-            }
-
-            // Load from localStorage
-            loadLocal() {
-                try {
-                    const data = localStorage.getItem(this.storageKey);
-                    if (data) {
-                        this.players = JSON.parse(data);
-                    }
-                } catch (error) {
-                    console.error('Error loading from localStorage:', error);
-                    this.players = [];
-                }
-            }
-
-            // Save to localStorage
-            saveLocal() {
-                try {
-                    localStorage.setItem(this.storageKey, JSON.stringify(this.players));
-                } catch (error) {
-                    console.error('Error saving to localStorage:', error);
-                }
-            }
-
-            // Load from Firebase
-            async loadFirebase() {
-                try {
-                    const snapshot = await this.db.collection('players').get();
-                    this.players = snapshot.docs.map(doc => ({
-                        ...doc.data(),
-                        id: doc.id
-                    }));
-                    this.saveLocal(); // Sync to localStorage
-                } catch (error) {
-                    console.error('Error loading from Firebase:', error);
-                }
-            }
-
-            // Add player
-            async addPlayer(playerData) {
-                const player = {
-                    ...playerData,
-                    id: Date.now().toString(),
-                    createdAt: new Date().toISOString()
-                };
-
-                this.players.push(player);
-                this.saveLocal();
-
-                if (this.useFirebase) {
-                    try {
-                        await this.db.collection('players').doc(player.id).set(player);
-                    } catch (error) {
-                        console.error('Error saving to Firebase:', error);
-                    }
-                }
-
-                return player;
-            }
-
-            // Update player
-            async updatePlayer(id, playerData) {
-                const index = this.players.findIndex(p => p.id === id);
-                if (index !== -1) {
-                    this.players[index] = {
-                        ...this.players[index],
-                        ...playerData,
-                        updatedAt: new Date().toISOString()
-                    };
-                    this.saveLocal();
-
-                    if (this.useFirebase) {
-                        try {
-                            await this.db.collection('players').doc(id).update(this.players[index]);
-                        } catch (error) {
-                            console.error('Error updating Firebase:', error);
-                        }
-                    }
-
-                    return this.players[index];
-                }
-                return null;
-            }
-
-            // Delete player
-            async deletePlayer(id) {
-                const index = this.players.findIndex(p => p.id === id);
-                if (index !== -1) {
-                    this.players.splice(index, 1);
-                    this.saveLocal();
-
-                    if (this.useFirebase) {
-                        try {
-                            await this.db.collection('players').doc(id).delete();
-                        } catch (error) {
-                            console.error('Error deleting from Firebase:', error);
-                        }
-                    }
-
-                    return true;
-                }
-                return false;
-            }
-
-            // Get all players
-            getPlayers() {
-                return this.players;
-            }
-
-            // Get player by ID
-            getPlayer(id) {
-                return this.players.find(p => p.id === id);
-            }
-
-            // Search players
-            searchPlayers(query) {
-                return this.players.filter(p =>
-                    p.name.toLowerCase().includes(query.toLowerCase()) ||
-                    p.position.toLowerCase().includes(query.toLowerCase())
-                );
-            }
-
-            // Filter players
-            filterPlayers(position = '', ageGroup = '') {
-                return this.players.filter(p => {
-                    const matchPosition = !position || p.position === position;
-                    const matchAge = !ageGroup || p.ageGroup === ageGroup;
-                    return matchPosition && matchAge;
-                });
-            }
-
-            // Calculate stats
-            calculateStats() {
-                return {
-                    totalPlayers: this.players.length,
-                    totalGoals: this.players.reduce((sum, p) => sum + (parseInt(p.goals) || 0), 0),
-                    totalAssists: this.players.reduce((sum, p) => sum + (parseInt(p.assists) || 0), 0)
-                };
-            }
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // ===== APPLICATION STATE =====
-        let dataManager = new DataManager();
-        let adminMode = false;
-        let currentModalPlayer = null;
-
-        // ===== DOM ELEMENTS =====
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
-        const adminToggle = document.getElementById('adminToggle');
-        const adminPanel = document.getElementById('adminPanel');
-        const addPlayerForm = document.getElementById('addPlayerForm');
-        const playerGrid = document.getElementById('playerGrid');
-        const searchInput = document.getElementById('searchInput');
-        const searchBtn = document.getElementById('searchBtn');
-        const positionFilter = document.getElementById('positionFilter');
-        const ageGroupFilter = document.getElementById('ageGroupFilter');
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modal = document.getElementById('modal');
-        const closeBtn = document.getElementById('closeBtn');
-        const toast = document.getElementById('toast');
-        const totalPlayersEl = document.getElementById('totalPlayers');
-        const totalGoalsEl = document.getElementById('totalGoals');
-        const totalAssistsEl = document.getElementById('totalAssists');
-        const playerCount = document.getElementById('playerCount');
-
-        // ===== EVENT LISTENERS =====
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('open');
-        });
-
-        adminToggle.addEventListener('click', () => {
+        // ===== ADMIN TOGGLE =====
+        document.getElementById('adminToggle').addEventListener('click', function() {
             adminMode = !adminMode;
-            adminToggle.classList.toggle('active');
-            adminPanel.classList.toggle('open');
-            playerGrid.querySelectorAll('.player-card').forEach(card => {
+            this.classList.toggle('active');
+            document.getElementById('adminPanel').classList.toggle('open');
+            
+            const playerCards = document.querySelectorAll('.player-card');
+            playerCards.forEach(card => {
                 card.classList.toggle('admin-mode');
-                const deleteBtn = card.querySelector('.delete-btn');
-                if (deleteBtn) deleteBtn.classList.toggle('show');
+                const btn = card.querySelector('.delete-btn');
+                if (adminMode) {
+                    btn.classList.add('show');
+                } else {
+                    btn.classList.remove('show');
+                }
             });
         });
 
-        addPlayerForm.addEventListener('submit', async (e) => {
+        // ===== HAMBURGER MENU =====
+        document.getElementById('hamburger').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+
+        // ===== FETCH PLAYERS FROM FIRESTORE =====
+        function loadPlayers() {
+            db.collection('players').orderBy('name').onSnapshot(snapshot => {
+                allPlayers = [];
+                snapshot.forEach(doc => {
+                    allPlayers.push({ id: doc.id, ...doc.data() });
+                });
+                filteredPlayers = [...allPlayers];
+                updateStats();
+                renderPlayers();
+            }, error => {
+                console.error('Error fetching players:', error);
+                showToast('Could not load players', 'error');
+            });
+        }
+
+        // ===== RENDER PLAYERS =====
+        function renderPlayers() {
+            const grid = document.getElementById('playerGrid');
+            const count = document.getElementById('playerCount');
+            
+            count.textContent = `${filteredPlayers.length} player${filteredPlayers.length !== 1 ? 's' : ''}`;
+
+            if (filteredPlayers.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h3>No players found</h3>
+                        <p>Try adjusting your filters or adding new players.</p>
+                        <div class="admin-hint">💡 Click the Admin button in the header to add players</div>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filteredPlayers.map(player => `
+                <div class="player-card ${adminMode ? 'admin-mode' : ''}" onclick="openModal('${player.id}')">
+                    <button class="delete-btn ${adminMode ? 'show' : ''}" onclick="deletePlayer(event, '${player.id}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <div class="card-img">
+                        ${player.photoUrl ? `<img src="${player.photoUrl}" alt="${player.name}">` : `<i class="fas fa-user-circle"></i>`}
+                        <span class="position-badge">${player.position}</span>
+                        <span class="flag">${player.flag || '🇰🇪'}</span>
+                    </div>
+                    <div class="card-body">
+                        <h3>${player.name}</h3>
+                        <div class="age-group">
+                            <span>${player.ageGroup}</span>
+                        </div>
+                        <p class="bio">${player.bio || 'Talented young player in development.'}</p>
+                        <div class="stats">
+                            <div><span class="num">${player.goals || 0}</span><span class="lbl">Goals</span></div>
+                            <div><span class="num">${player.assists || 0}</span><span class="lbl">Assists</span></div>
+                            <div><span class="num">${player.appearances || 0}</span><span class="lbl">Apps</span></div>
+                        </div>
+                    </div>
+                    <div class="grade-badge">${player.grade || 'A'}</div>
+                </div>
+            `).join('');
+        }
+
+        // ===== UPDATE STATS =====
+        function updateStats() {
+            const totalPlayers = allPlayers.length;
+            const totalGoals = allPlayers.reduce((sum, p) => sum + (p.goals || 0), 0);
+            const totalAssists = allPlayers.reduce((sum, p) => sum + (p.assists || 0), 0);
+
+            document.getElementById('totalPlayers').textContent = totalPlayers;
+            document.getElementById('totalGoals').textContent = totalGoals;
+            document.getElementById('totalAssists').textContent = totalAssists;
+        }
+
+        // ===== SEARCH =====
+        document.getElementById('searchBtn').addEventListener('click', performSearch);
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') performSearch();
+        });
+
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (!query) {
+                filteredPlayers = [...allPlayers];
+            } else {
+                filteredPlayers = allPlayers.filter(p => 
+                    p.name.toLowerCase().includes(query) ||
+                    p.position.toLowerCase().includes(query) ||
+                    p.nationality?.toLowerCase().includes(query)
+                );
+            }
+            applyFilters();
+        }
+
+        // ===== FILTERS =====
+        document.getElementById('positionFilter').addEventListener('change', applyFilters);
+        document.getElementById('ageGroupFilter').addEventListener('change', applyFilters);
+
+        function applyFilters() {
+            const position = document.getElementById('positionFilter').value;
+            const ageGroup = document.getElementById('ageGroupFilter').value;
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+
+            filteredPlayers = allPlayers.filter(p => {
+                let matches = true;
+                if (position && p.position !== position) matches = false;
+                if (ageGroup && p.ageGroup !== ageGroup) matches = false;
+                if (searchQuery && !p.name.toLowerCase().includes(searchQuery) && 
+                    !p.position.toLowerCase().includes(searchQuery) &&
+                    !p.nationality?.toLowerCase().includes(searchQuery)) matches = false;
+                return matches;
+            });
+
+            renderPlayers();
+        }
+
+        // ===== OPEN MODAL =====
+        function openModal(playerId) {
+            const player = allPlayers.find(p => p.id === playerId);
+            if (!player) return;
+
+            const modal = document.getElementById('playerModal');
+            document.getElementById('modalName').textContent = player.name;
+            document.getElementById('modalPosition').textContent = player.position;
+            document.getElementById('modalAge').textContent = player.ageGroup;
+            document.getElementById('modalBio').textContent = player.bio || 'Talented young player in development.';
+            document.getElementById('modalFlag').textContent = player.flag || '🇰🇪';
+            document.getElementById('modalGoals').textContent = player.goals || 0;
+            document.getElementById('modalAssists').textContent = player.assists || 0;
+            document.getElementById('modalAppearances').textContent = player.appearances || 0;
+            document.getElementById('modalMinutes').textContent = player.minutes || 0;
+
+            const coachSection = document.getElementById('coachSection');
+            if (player.grade || player.comments) {
+                document.getElementById('modalGrade').textContent = player.grade || 'A';
+                document.getElementById('modalComments').textContent = player.comments || 'Excellent potential.';
+                coachSection.style.display = 'block';
+            } else {
+                coachSection.style.display = 'none';
+            }
+
+            const modalImg = document.getElementById('modalImg');
+            const videoDiv = document.getElementById('modalVideo');
+            if (player.photoUrl) {
+                modalImg.innerHTML = `<img src="${player.photoUrl}" alt="${player.name}"><span class="flag-big">${player.flag || '🇰🇪'}</span>`;
+            } else {
+                modalImg.innerHTML = `<i class="fas fa-futbol"></i><span class="flag-big">${player.flag || '🇰🇪'}</span>`;
+            }
+
+            if (player.videoUrl) {
+                document.getElementById('playerVideo').src = player.videoUrl;
+                videoDiv.style.display = 'block';
+            } else {
+                videoDiv.style.display = 'none';
+            }
+
+            modal.classList.add('open');
+        }
+
+        // ===== CLOSE MODAL =====
+        document.getElementById('closeModal').addEventListener('click', () => {
+            document.getElementById('playerModal').classList.remove('open');
+        });
+
+        document.getElementById('playerModal').addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('open');
+        });
+
+        // ===== ADD PLAYER (ADMIN) =====
+        document.getElementById('addPlayerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const playerData = {
-                name: document.getElementById('fName').value,
+            const newPlayer = {
+                name: document.getElementById('fName').value.trim(),
                 ageGroup: document.getElementById('fAgeGroup').value,
                 position: document.getElementById('fPosition').value,
                 nationality: document.getElementById('fNationality').value,
                 flag: document.getElementById('fFlag').value,
-                emoji: document.getElementById('fEmoji').value,
-                bio: document.getElementById('fBio').value,
-                goals: document.getElementById('fGoals').value,
-                assists: document.getElementById('fAssists').value,
-                appearances: document.getElementById('fAppearances').value,
-                minutes: document.getElementById('fMinutes').value,
-                grade: document.getElementById('fGrade').value,
-                coachComments: document.getElementById('fCoachComments').value,
-                imageUrl: document.getElementById('fImageUrl').value,
-                videoUrl: document.getElementById('fVideoUrl').value
+                bio: document.getElementById('fBio').value.trim(),
+                goals: parseInt(document.getElementById('fGoals').value) || 0,
+                assists: parseInt(document.getElementById('fAssists').value) || 0,
+                appearances: parseInt(document.getElementById('fAppearances').value) || 0,
+                minutes: parseInt(document.getElementById('fMinutes').value) || 0,
+                grade: document.getElementById('fGrade').value || 'A',
+                comments: document.getElementById('fComments').value.trim(),
+                photoUrl: document.getElementById('fPhotoUrl').value.trim(),
+                videoUrl: document.getElementById('fVideoUrl').value.trim(),
+                createdAt: new Date()
             };
 
-            await dataManager.addPlayer(playerData);
-            addPlayerForm.reset();
-            renderPlayers();
-            showToast('Player added successfully!', 'success');
-        });
-
-        searchBtn.addEventListener('click', renderPlayers);
-        searchInput.addEventListener('keyup', renderPlayers);
-        positionFilter.addEventListener('change', renderPlayers);
-        ageGroupFilter.addEventListener('change', renderPlayers);
-
-        closeBtn.addEventListener('click', () => {
-            modalOverlay.classList.remove('open');
-        });
-
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) {
-                modalOverlay.classList.remove('open');
-            }
-        });
-
-        // ===== FUNCTIONS =====
-        function renderPlayers() {
-            let players = dataManager.getPlayers();
-
-            // Apply search
-            const searchQuery = searchInput.value;
-            if (searchQuery) {
-                players = dataManager.searchPlayers(searchQuery);
-            }
-
-            // Apply filters
-            const position = positionFilter.value;
-            const ageGroup = ageGroupFilter.value;
-            players = dataManager.filterPlayers(position, ageGroup);
-
-            playerGrid.innerHTML = '';
-
-            if (players.length === 0) {
-                playerGrid.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-user-slash"></i>
-                        <h3>No Players Found</h3>
-                        <p>Try adjusting your search or filters.</p>
-                        ${adminMode ? '<div class="admin-hint"><i class="fas fa-info-circle"></i> Use the admin panel above to add players.</div>' : ''}
-                    </div>
-                `;
-                updateStats();
+            if (!newPlayer.name) {
+                showToast('Please enter player name', 'error');
                 return;
             }
 
-            players.forEach(player => {
-                const card = createPlayerCard(player);
-                playerGrid.appendChild(card);
-            });
+            try {
+                await db.collection('players').add(newPlayer);
+                showToast('✅ Player added successfully!', 'success');
+                this.reset();
+                document.getElementById('fAgeGroup').value = 'Under19';
+                document.getElementById('fPosition').value = 'Midfielder';
+                document.getElementById('fEmoji').value = '⚡';
+            } catch (error) {
+                console.error('Error adding player:', error);
+                showToast('Failed to add player', 'error');
+            }
+        });
 
-            updateStats();
-        }
+        // ===== DELETE PLAYER (ADMIN) =====
+        function deletePlayer(e, playerId) {
+            e.stopPropagation();
+            if (!confirm('Are you sure you want to delete this player?')) return;
 
-        function createPlayerCard(player) {
-            const card = document.createElement('div');
-            card.className = `player-card ${adminMode ? 'admin-mode' : ''}`;
-
-            const imageHtml = player.imageUrl
-                ? `<img src="${player.imageUrl}" alt="${player.name}" onerror="this.style.display='none'">`
-                : `<span>${player.emoji || '⚽'}</span>`;
-
-            card.innerHTML = `
-                <div class="card-img">
-                    ${imageHtml}
-                    <span class="position-badge">${player.position}</span>
-                    <span class="flag">${player.flag}</span>
-                    ${adminMode ? `<button class="delete-btn show" data-id="${player.id}"><i class="fas fa-trash"></i></button>` : ''}
-                </div>
-                <div class="card-body">
-                    <h3>${player.name}</h3>
-                    <div class="age-group">
-                        <span><i class="fas fa-calendar"></i> ${player.ageGroup}</span>
-                    </div>
-                    <p class="bio">${player.bio || 'No bio available'}</p>
-                    <div class="stats">
-                        <div>
-                            <div class="num">${player.goals}</div>
-                            <div class="lbl">Goals</div>
-                        </div>
-                        <div>
-                            <div class="num">${player.assists}</div>
-                            <div class="lbl">Assists</div>
-                        </div>
-                        <div>
-                            <div class="num">${player.appearances}</div>
-                            <div class="lbl">Apps</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="grade-badge">${player.grade || 'A'}</div>
-            `;
-
-            card.addEventListener('click', (e) => {
-                if (!e.target.closest('.delete-btn')) {
-                    openModal(player);
-                }
-            });
-
-            const deleteBtn = card.querySelector('.delete-btn');
-            if (deleteBtn) {
-                deleteBtn.addEventListener('click', async (e) => {
-                    e.stopPropagation();
-                    if (confirm(`Delete ${player.name}?`)) {
-                        await dataManager.deletePlayer(player.id);
-                        renderPlayers();
-                        showToast('Player deleted!', 'error');
-                    }
+            db.collection('players').doc(playerId).delete()
+                .then(() => showToast('✅ Player deleted!', 'success'))
+                .catch(error => {
+                    console.error('Error deleting player:', error);
+                    showToast('Failed to delete player', 'error');
                 });
-            }
-
-            return card;
-        }
-
-        function openModal(player) {
-            currentModalPlayer = player;
-
-            if (player.imageUrl) {
-                document.getElementById('modalImg').innerHTML = `<img src="${player.imageUrl}" alt="${player.name}" onerror="this.style.display='none'">`;
-                document.getElementById('modalImg').style.display = 'flex';
-                document.getElementById('modalVideo').style.display = 'none';
-            } else if (player.videoUrl) {
-                const videoHtml = `<video controls><source src="${player.videoUrl}" type="video/mp4"></video>`;
-                document.getElementById('modalVideo').innerHTML = videoHtml;
-                document.getElementById('modalImg').style.display = 'none';
-                document.getElementById('modalVideo').style.display = 'block';
-            } else {
-                document.getElementById('modalImg').innerHTML = `<span>${player.emoji || '⚽'}</span>`;
-                document.getElementById('modalImg').style.display = 'flex';
-                document.getElementById('modalVideo').style.display = 'none';
-            }
-
-            document.getElementById('modalName').textContent = player.name;
-            document.getElementById('modalPosition').textContent = player.position;
-            document.getElementById('modalAgeGroup').textContent = player.ageGroup;
-            document.getElementById('modalNationality').textContent = player.nationality;
-            document.getElementById('modalBio').textContent = player.bio || 'No bio available';
-            document.getElementById('modalGoals').textContent = player.goals;
-            document.getElementById('modalAssists').textContent = player.assists;
-            document.getElementById('modalAppearances').textContent = player.appearances;
-            document.getElementById('modalMinutes').textContent = player.minutes;
-            document.getElementById('modalGrade').textContent = player.grade || 'A';
-            document.getElementById('modalCoachComments').textContent = player.coachComments || 'No comments available';
-
-            modalOverlay.classList.add('open');
-        }
-
-        function updateStats() {
-            const stats = dataManager.calculateStats();
-            totalPlayersEl.textContent = stats.totalPlayers;
-            totalGoalsEl.textContent = stats.totalGoals;
-            totalAssistsEl.textContent = stats.totalAssists;
-            playerCount.textContent = stats.totalPlayers;
-        }
-
-        function showToast(message, type = 'success') {
-            document.getElementById('toastMessage').textContent = message;
-            toast.className = `toast ${type}`;
-            toast.classList.add('show');
-
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
         }
 
         // ===== INITIALIZE =====
-        renderPlayers();
+        loadPlayers();
     </script>
 </body>
 </html>
