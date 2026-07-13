@@ -1145,12 +1145,15 @@
     <script>
         // ===== FIREBASE CONFIG =====
         const firebaseConfig = {
-            apiKey: "AIzaSyCNvPmtJK_qNqkMnPqADYmzPQrVmPQrVmQ",
-            authDomain: "lasalle-academy-db.firebaseapp.com",
-            projectId: "lasalle-academy-db",
-            storageBucket: "lasalle-academy-db.appspot.com",
-            messagingSenderId: "123456789012",
-            appId: "1:123456789012:web:abcdef123456789012345"
+            service firebase.storage {
+  match /b/{bucket}/o {
+    match /images/{imageId} {
+      // Only allow uploads of any image file that's less than 5MB
+      allow write: if request.resource.size < 5 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+    }
+  }
+}
         };
 
         firebase.initializeApp(firebaseConfig);
