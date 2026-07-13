@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <!-- Font Awesome 6 (Free) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <!-- Firebase SDKs (v9 compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <style>
         /* ----- RESET & BASE (Blue dominant, with Purple, Red, Yellow) ----- */
         * {
@@ -17,13 +21,13 @@
         }
 
         :root {
-            --primary: #1a5276;         /* deep blue */
-            --primary-light: #2e86c1;   /* lighter blue */
-            --primary-dark: #0e2f44;    /* very dark blue */
+            --primary: #1a5276;
+            --primary-light: #2e86c1;
+            --primary-dark: #0e2f44;
             --accent-yellow: #f1c40f;
             --accent-purple: #8e44ad;
             --accent-red: #e74c3c;
-            --bg: #eaf2f8;              /* light blue-gray */
+            --bg: #eaf2f8;
             --card-bg: #ffffff;
             --text-dark: #1a1a2e;
             --text-muted: #4a4a6a;
@@ -44,24 +48,14 @@
             flex-direction: column;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+        a { text-decoration: none; color: inherit; }
 
         /* ----- SCROLLBAR ----- */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary-light);
-            border-radius: 10px;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 10px; }
 
-        /* ----- HEADER / NAV (Blue) ----- */
+        /* ----- HEADER / NAV ----- */
         .header {
             background: var(--primary);
             color: #fff;
@@ -72,7 +66,6 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             border-bottom: 3px solid var(--accent-yellow);
         }
-
         .header-inner {
             max-width: 1440px;
             margin: 0 auto;
@@ -81,7 +74,6 @@
             justify-content: space-between;
             height: 74px;
         }
-
         .logo {
             display: flex;
             align-items: center;
@@ -92,19 +84,10 @@
             letter-spacing: 0.5px;
             color: #fff;
         }
-        .logo i {
-            color: var(--accent-yellow);
-            font-size: 2rem;
-        }
-        .logo span {
-            color: var(--accent-yellow);
-        }
-        .logo .la-salle {
-            color: #fff;
-        }
-        .logo .academy {
-            color: var(--accent-purple);
-        }
+        .logo i { color: var(--accent-yellow); font-size: 2rem; }
+        .logo span { color: var(--accent-yellow); }
+        .logo .la-salle { color: #fff; }
+        .logo .academy { color: var(--accent-purple); }
 
         .nav-links {
             display: flex;
@@ -119,10 +102,7 @@
             padding: 6px 0;
             border-bottom: 2px solid transparent;
         }
-        .nav-links a:hover {
-            color: var(--accent-yellow);
-            border-bottom-color: var(--accent-yellow);
-        }
+        .nav-links a:hover,
         .nav-links a.active {
             color: var(--accent-yellow);
             border-bottom-color: var(--accent-yellow);
@@ -146,7 +126,6 @@
             transition: var(--transition);
         }
 
-        /* Admin toggle button */
         .admin-toggle-btn {
             background: rgba(255, 255, 255, 0.12);
             border: 2px solid rgba(255, 255, 255, 0.25);
@@ -170,11 +149,9 @@
             background: var(--accent-red);
             border-color: var(--accent-red);
         }
-        .admin-toggle-btn i {
-            font-size: 0.9rem;
-        }
+        .admin-toggle-btn i { font-size: 0.9rem; }
 
-        /* ----- HERO (Blue gradient with accent) ----- */
+        /* ----- HERO ----- */
         .hero {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: #fff;
@@ -200,13 +177,8 @@
             letter-spacing: 1px;
             margin-bottom: 0.5rem;
         }
-        .hero h1 i {
-            color: var(--accent-yellow);
-            margin-right: 8px;
-        }
-        .hero h1 .purple {
-            color: var(--accent-purple);
-        }
+        .hero h1 i { color: var(--accent-yellow); margin-right: 8px; }
+        .hero h1 .purple { color: var(--accent-purple); }
         .hero p {
             font-size: 1.15rem;
             opacity: 0.85;
@@ -220,9 +192,7 @@
             gap: 3rem;
             flex-wrap: wrap;
         }
-        .hero-stats div {
-            text-align: center;
-        }
+        .hero-stats div { text-align: center; }
         .hero-stats .number {
             font-family: 'Oswald', sans-serif;
             font-size: 2.2rem;
@@ -237,7 +207,7 @@
             opacity: 0.7;
         }
 
-        /* ----- TOOLBAR (search + filters) ----- */
+        /* ----- TOOLBAR ----- */
         .toolbar {
             max-width: 1440px;
             margin: -1.2rem auto 0;
@@ -256,7 +226,6 @@
             justify-content: space-between;
             gap: 1rem;
         }
-
         .search-box {
             display: flex;
             align-items: center;
@@ -272,10 +241,7 @@
             border-color: var(--accent-yellow);
             background: #fff;
         }
-        .search-box i {
-            color: var(--text-muted);
-            font-size: 1rem;
-        }
+        .search-box i { color: var(--text-muted); font-size: 1rem; }
         .search-box input {
             border: none;
             background: transparent;
@@ -297,9 +263,7 @@
             font-size: 0.9rem;
             font-family: 'Inter', sans-serif;
         }
-        .search-box button:hover {
-            background: var(--primary-light);
-        }
+        .search-box button:hover { background: var(--primary-light); }
 
         .filter-group {
             display: flex;
@@ -332,20 +296,16 @@
             background-position: right 12px center;
             padding-right: 2.4rem;
         }
-        .filter-group select:focus {
-            border-color: var(--accent-yellow);
-        }
+        .filter-group select:focus { border-color: var(--accent-yellow); }
 
-        /* ----- ADMIN PANEL (Add Player Form) ----- */
+        /* ----- ADMIN PANEL ----- */
         .admin-panel {
             max-width: 1440px;
             margin: 0 auto;
             padding: 0 2rem 1.5rem;
             display: none;
         }
-        .admin-panel.open {
-            display: block;
-        }
+        .admin-panel.open { display: block; }
         .admin-panel .panel-inner {
             background: var(--card-bg);
             border-radius: var(--radius);
@@ -363,9 +323,7 @@
             margin-bottom: 1rem;
             color: var(--primary);
         }
-        .admin-panel .panel-title i {
-            color: var(--admin-green);
-        }
+        .admin-panel .panel-title i { color: var(--admin-green); }
         .admin-panel .panel-title small {
             font-family: 'Inter', sans-serif;
             font-weight: 400;
@@ -414,12 +372,6 @@
             resize: vertical;
             min-height: 60px;
         }
-        .admin-form .form-group input[type="number"] {
-            -moz-appearance: textfield;
-        }
-        .admin-form .form-group input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-        }
         .admin-form .form-group input[type="file"] {
             padding: 0.3rem;
             border: 1px dashed #ccc;
@@ -448,9 +400,6 @@
             background: #1e8449;
             transform: scale(1.02);
         }
-        .admin-form .submit-btn i {
-            font-size: 1rem;
-        }
 
         /* ----- PLAYER GRID ----- */
         .players-section {
@@ -459,7 +408,6 @@
             padding: 0.5rem 2rem 4rem;
             flex: 1;
         }
-
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -473,10 +421,7 @@
             font-weight: 600;
             color: var(--primary);
         }
-        .section-header h2 i {
-            color: var(--accent-yellow);
-            margin-right: 8px;
-        }
+        .section-header h2 i { color: var(--accent-yellow); margin-right: 8px; }
         .section-header .count {
             font-size: 0.95rem;
             color: var(--text-muted);
@@ -492,7 +437,7 @@
             gap: 1.8rem;
         }
 
-        /* ----- PLAYER CARD (Blue theme) ----- */
+        /* ----- PLAYER CARD ----- */
         .player-card {
             background: var(--card-bg);
             border-radius: var(--radius);
@@ -510,9 +455,7 @@
             box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
             border-color: var(--accent-yellow);
         }
-        .player-card.admin-mode:hover {
-            border-color: var(--accent-red);
-        }
+        .player-card.admin-mode:hover { border-color: var(--accent-red); }
 
         .player-card .card-img {
             width: 100%;
@@ -552,8 +495,6 @@
             font-size: 1.8rem;
             filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
         }
-
-        /* Delete button on card (admin only) */
         .player-card .delete-btn {
             position: absolute;
             top: 12px;
@@ -602,9 +543,7 @@
             color: var(--text-muted);
             margin-bottom: 0.6rem;
         }
-        .player-card .card-body .age-group span {
-            margin: 0 4px;
-        }
+        .player-card .card-body .age-group span { margin: 0 4px; }
         .player-card .card-body .bio {
             font-size: 0.9rem;
             color: var(--text-muted);
@@ -623,9 +562,7 @@
             padding-top: 0.7rem;
             margin-top: auto;
         }
-        .player-card .card-body .stats div {
-            text-align: center;
-        }
+        .player-card .card-body .stats div { text-align: center; }
         .player-card .card-body .stats .num {
             font-family: 'Oswald', sans-serif;
             font-size: 1.1rem;
@@ -638,8 +575,6 @@
             letter-spacing: 0.5px;
             color: var(--text-muted);
         }
-
-        /* Performance grade badge on card */
         .player-card .grade-badge {
             position: absolute;
             bottom: 12px;
@@ -704,17 +639,11 @@
             transform: translateY(0);
             opacity: 1;
         }
-        .toast.success {
-            background: var(--admin-green);
-        }
-        .toast.error {
-            background: var(--accent-red);
-        }
-        .toast i {
-            font-size: 1.2rem;
-        }
+        .toast.success { background: var(--admin-green); }
+        .toast.error { background: var(--accent-red); }
+        .toast i { font-size: 1.2rem; }
 
-        /* ----- MODAL (with media, grade, coach comments) ----- */
+        /* ----- MODAL ----- */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -727,9 +656,7 @@
             padding: 1.5rem;
             animation: fadeIn 0.25s ease;
         }
-        .modal-overlay.open {
-            display: flex;
-        }
+        .modal-overlay.open { display: flex; }
 
         .modal {
             background: #fff;
@@ -805,9 +732,7 @@
             color: var(--text-muted);
             margin-bottom: 1rem;
         }
-        .modal .modal-body .sub span {
-            margin: 0 6px;
-        }
+        .modal .modal-body .sub span { margin: 0 6px; }
         .modal .modal-body .full-bio {
             font-size: 0.95rem;
             line-height: 1.7;
@@ -823,9 +748,7 @@
             padding: 1rem 1.2rem;
             margin-top: 0.5rem;
         }
-        .modal .modal-body .stats-grid div {
-            text-align: center;
-        }
+        .modal .modal-body .stats-grid div { text-align: center; }
         .modal .modal-body .stats-grid .num {
             font-family: 'Oswald', sans-serif;
             font-size: 1.5rem;
@@ -854,9 +777,7 @@
             align-items: center;
             gap: 8px;
         }
-        .modal .modal-body .coach-section h4 i {
-            color: var(--accent-purple);
-        }
+        .modal .modal-body .coach-section h4 i { color: var(--accent-purple); }
         .modal .modal-body .coach-section .grade {
             display: inline-block;
             background: var(--accent-yellow);
@@ -874,7 +795,7 @@
             font-style: italic;
         }
 
-        /* ----- FOOTER (Blue theme) ----- */
+        /* ----- FOOTER ----- */
         .footer {
             background: var(--primary);
             color: rgba(255, 255, 255, 0.7);
@@ -904,12 +825,8 @@
             max-width: 500px;
             margin: 0 auto;
         }
-        .footer p strong {
-            color: var(--accent-yellow);
-        }
-        .footer .purple {
-            color: var(--accent-purple);
-        }
+        .footer p strong { color: var(--accent-yellow); }
+        .footer .purple { color: var(--accent-purple); }
 
         /* ----- ANIMATIONS ----- */
         @keyframes fadeIn {
@@ -927,7 +844,6 @@
             .player-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
             .admin-form { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
         }
-
         @media (max-width: 820px) {
             .header-inner { height: 64px; }
             .nav-links { gap: 1rem; font-size: 0.9rem; }
@@ -942,7 +858,6 @@
             .modal .modal-body { padding: 1.2rem; }
             .modal .modal-body .stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
-
         @media (max-width: 600px) {
             .header { padding: 0 1rem; }
             .nav-links {
@@ -961,26 +876,19 @@
             .nav-links a { padding: 8px 0; border-bottom: none; }
             .nav-links a:hover { border-bottom: none; }
             .hamburger { display: flex; }
-
             .admin-toggle-btn span { display: none; }
-
             .hero h1 { font-size: 1.6rem; }
             .hero p { font-size: 0.95rem; }
             .hero-stats .number { font-size: 1.4rem; }
-
             .player-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
             .section-header h2 { font-size: 1.3rem; }
             .search-box { flex: 1 1 100%; }
             .filter-group { flex-wrap: wrap; justify-content: flex-start; }
-
             .admin-form { grid-template-columns: 1fr; }
-
             .modal .modal-body h2 { font-size: 1.5rem; }
             .modal .modal-body .stats-grid { grid-template-columns: 1fr 1fr; }
-
             .toast { bottom: 16px; right: 16px; left: 16px; font-size: 0.8rem; padding: 0.7rem 1.2rem; }
         }
-
         @media (max-width: 420px) {
             .player-grid { grid-template-columns: 1fr; }
             .hero-stats { gap: 1rem; }
@@ -1233,10 +1141,37 @@
         (function() {
             'use strict';
 
+            // ====================================================
+            //  🔥 FIREBASE CONFIGURATION – REPLACE WITH YOUR OWN
+            // ====================================================
+            const firebaseConfig = {
+                apiKey: "YOUR_API_KEY",
+                authDomain: "YOUR_PROJECT.firebaseapp.com",
+                projectId: "YOUR_PROJECT_ID",
+                storageBucket: "YOUR_PROJECT.appspot.com",
+                messagingSenderId: "YOUR_SENDER_ID",
+                appId: "YOUR_APP_ID"
+            };
+
+            // Initialize Firebase
+            let db;
+            let useFirebase = false;
+            try {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+                // Enable offline persistence (optional)
+                db.enablePersistence().catch(err => console.warn('Offline persistence not available:', err));
+                useFirebase = true;
+                console.log('🔥 Firebase connected');
+            } catch (e) {
+                console.warn('⚠️ Firebase not configured. Falling back to localStorage.', e);
+                useFirebase = false;
+            }
+
             // ----- AGE GROUPS -----
             const AGE_GROUPS = ['Under5','Under7','Under9','Under11','Under13','Under15','Under17','Under19'];
 
-            // ----- DEFAULT PLAYER DATA (La Salle Academy, Kenya) -----
+            // ----- DEFAULT PLAYER DATA (fallback) -----
             const DEFAULT_PLAYERS = [{
                 id: 1,
                 name: 'Kevin Ochieng',
@@ -1443,28 +1378,10 @@
                 videoData: null,
             }, ];
 
-            // ----- STORAGE -----
-            const STORAGE_KEY = 'lasalle_players';
-
-            function loadPlayers() {
-                const stored = localStorage.getItem(STORAGE_KEY);
-                if (stored) {
-                    try {
-                        const parsed = JSON.parse(stored);
-                        if (Array.isArray(parsed) && parsed.length) return parsed;
-                    } catch (_) { /* ignore */ }
-                }
-                // Initialize with defaults
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_PLAYERS));
-                return [...DEFAULT_PLAYERS];
-            }
-
-            function savePlayers(players) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(players));
-            }
-
-            let players = loadPlayers();
-            let nextId = players.reduce((max, p) => Math.max(max, p.id), 0) + 1;
+            // ----- STATE -----
+            let players = [];
+            let nextId = 1;
+            let isAdmin = false;
 
             // ----- DOM REFS -----
             const grid = document.getElementById('playerGrid');
@@ -1477,13 +1394,9 @@
             const totalPlayersEl = document.getElementById('totalPlayers');
             const totalGoalsEl = document.getElementById('totalGoals');
             const totalAssistsEl = document.getElementById('totalAssists');
-
-            // Admin
             const adminToggle = document.getElementById('adminToggle');
             const adminPanel = document.getElementById('adminPanel');
             const addForm = document.getElementById('addPlayerForm');
-
-            // Modal
             const overlay = document.getElementById('modalOverlay');
             const modalClose = document.getElementById('modalClose');
             const modalName = document.getElementById('modalName');
@@ -1500,16 +1413,79 @@
             const modalVideo = document.getElementById('modalVideo');
             const modalGrade = document.getElementById('modalGrade');
             const modalComments = document.getElementById('modalComments');
-            const coachSection = document.getElementById('coachSection');
-
-            // Toast
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
-
-            let isAdmin = false;
             let toastTimeout = null;
 
-            // ----- HELPERS -----
+            // ============================================================
+            //  DATA ACCESS LAYER (Firebase or localStorage fallback)
+            // ============================================================
+            async function loadData() {
+                if (useFirebase) {
+                    try {
+                        const snapshot = await db.collection('players').orderBy('id').get();
+                        const docs = snapshot.docs.map(doc => doc.data());
+                        if (docs.length > 0) {
+                            players = docs;
+                            // Update nextId
+                            const maxId = players.reduce((max, p) => Math.max(max, p.id), 0);
+                            nextId = maxId + 1;
+                            return;
+                        }
+                    } catch (e) {
+                        console.warn('Firebase read failed, falling back to localStorage', e);
+                    }
+                }
+                // Fallback to localStorage
+                const stored = localStorage.getItem('lasalle_players');
+                if (stored) {
+                    try {
+                        const parsed = JSON.parse(stored);
+                        if (Array.isArray(parsed) && parsed.length) {
+                            players = parsed;
+                            const maxId = players.reduce((max, p) => Math.max(max, p.id), 0);
+                            nextId = maxId + 1;
+                            return;
+                        }
+                    } catch (_) { /* ignore */ }
+                }
+                // No data – seed defaults
+                players = DEFAULT_PLAYERS.map(p => ({ ...p }));
+                const maxId = players.reduce((max, p) => Math.max(max, p.id), 0);
+                nextId = maxId + 1;
+                await saveData(); // save defaults
+            }
+
+            async function saveData() {
+                if (useFirebase) {
+                    try {
+                        // We'll use a batch write to sync all players
+                        // For simplicity, we'll clear the collection and re-add all.
+                        // In production, use a more efficient diffing approach.
+                        const batch = db.batch();
+                        // First, get all existing doc IDs to delete
+                        const snapshot = await db.collection('players').get();
+                        snapshot.forEach(doc => batch.delete(doc.ref));
+                        // Add each player with a new doc ID
+                        players.forEach(p => {
+                            const ref = db.collection('players').doc(); // auto-generated ID
+                            batch.set(ref, p);
+                        });
+                        await batch.commit();
+                        console.log('✅ Data synced to Firebase');
+                        return;
+                    } catch (e) {
+                        console.error('Firebase write failed, falling back to localStorage', e);
+                    }
+                }
+                // Fallback to localStorage
+                localStorage.setItem('lasalle_players', JSON.stringify(players));
+                console.log('💾 Data saved to localStorage');
+            }
+
+            // ============================================================
+            //  HELPER FUNCTIONS
+            // ============================================================
             function getInitials(name) {
                 return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
             }
@@ -1529,7 +1505,9 @@
                 }, 2800);
             }
 
-            // ----- RENDER -----
+            // ============================================================
+            //  RENDER
+            // ============================================================
             function renderPlayers(list) {
                 if (!list.length) {
                     grid.innerHTML = `
@@ -1554,12 +1532,9 @@
                     } else {
                         imgHtml = `<span style="font-size:4rem; font-weight:700; color:${color}; opacity:0.5;">${initials}</span>`;
                     }
-
                     const deleteBtnHtml = isAdmin ?
                         `<button class="delete-btn show" data-id="${p.id}" title="Delete player"><i class="fas fa-trash"></i></button>` :
                         '';
-
-                    // Grade badge
                     const gradeBadge = p.performanceGrade ? `<span class="grade-badge">${p.performanceGrade}</span>` : '';
 
                     html += `
@@ -1608,7 +1583,9 @@
                 });
             }
 
-            // ----- FILTER + SORT -----
+            // ============================================================
+            //  FILTER + SORT
+            // ============================================================
             function filterAndSort() {
                 const searchTerm = searchInput.value.trim().toLowerCase();
                 const pos = positionFilter.value;
@@ -1654,7 +1631,9 @@
                 updateHeroStats(filtered);
             }
 
-            // ----- UPDATE HERO STATS -----
+            // ============================================================
+            //  UPDATE HERO STATS
+            // ============================================================
             function updateHeroStats(list) {
                 const total = list.length;
                 const goals = list.reduce((sum, p) => sum + p.goals, 0);
@@ -1664,7 +1643,9 @@
                 totalAssistsEl.textContent = assists;
             }
 
-            // ----- MODAL -----
+            // ============================================================
+            //  MODAL
+            // ============================================================
             function openModal(player) {
                 modalName.textContent = player.name;
                 modalSub.textContent = `${player.position} · ${player.ageGroup || 'N/A'} · ${player.nationality}`;
@@ -1676,7 +1657,6 @@
                 modalEmoji.textContent = player.emoji || '🧑';
                 modalFlag.textContent = player.flag || '🇰🇪';
 
-                // Image
                 if (player.imageData) {
                     modalImg.innerHTML = `<img src="${player.imageData}" alt="${player.name}" /><span class="flag-big">${player.flag || '🇰🇪'}</span>`;
                 } else {
@@ -1684,7 +1664,6 @@
                         `<span style="font-size:6rem;">${player.emoji || '🧑'}</span><span class="flag-big">${player.flag || '🇰🇪'}</span>`;
                 }
 
-                // Video
                 if (player.videoData) {
                     modalVideoContainer.style.display = 'block';
                     modalVideo.src = player.videoData;
@@ -1694,7 +1673,6 @@
                     modalVideo.src = '';
                 }
 
-                // Coach section
                 if (player.performanceGrade) {
                     modalGrade.textContent = player.performanceGrade + '/10';
                 } else {
@@ -1709,12 +1687,13 @@
             function closeModal() {
                 overlay.classList.remove('open');
                 document.body.style.overflow = '';
-                // pause video if playing
                 modalVideo.pause();
             }
 
-            // ----- ADMIN: ADD PLAYER -----
-            function addPlayer(e) {
+            // ============================================================
+            //  ADMIN: ADD PLAYER
+            // ============================================================
+            async function addPlayer(e) {
                 e.preventDefault();
 
                 const name = document.getElementById('fName').value.trim();
@@ -1736,141 +1715,117 @@
                     return;
                 }
 
-                // Handle image upload
                 const imageFile = document.getElementById('fImage').files[0];
                 const videoFile = document.getElementById('fVideo').files[0];
-
-                // We'll use FileReader to convert to base64
-                const readerImage = new FileReader();
-                const readerVideo = new FileReader();
-
                 let imageData = null;
                 let videoData = null;
 
                 const processImage = new Promise((resolve) => {
                     if (imageFile) {
-                        readerImage.onload = function(e) {
-                            imageData = e.target.result;
-                            resolve();
-                        };
-                        readerImage.readAsDataURL(imageFile);
-                    } else {
-                        resolve();
-                    }
+                        const reader = new FileReader();
+                        reader.onload = function(e) { imageData = e.target.result; resolve(); };
+                        reader.readAsDataURL(imageFile);
+                    } else { resolve(); }
                 });
-
                 const processVideo = new Promise((resolve) => {
                     if (videoFile) {
-                        readerVideo.onload = function(e) {
-                            videoData = e.target.result;
-                            resolve();
-                        };
-                        readerVideo.readAsDataURL(videoFile);
-                    } else {
-                        resolve();
-                    }
+                        const reader = new FileReader();
+                        reader.onload = function(e) { videoData = e.target.result; resolve(); };
+                        reader.readAsDataURL(videoFile);
+                    } else { resolve(); }
                 });
 
-                Promise.all([processImage, processVideo]).then(() => {
-                    const newPlayer = {
-                        id: nextId++,
-                        name,
-                        ageGroup,
-                        position,
-                        nationality,
-                        flag,
-                        emoji,
-                        bio: bio || 'A talented player at La Salle Football Academy.',
-                        goals,
-                        assists,
-                        appearances,
-                        minutes,
-                        performanceGrade,
-                        coachComments: coachComments || '',
-                        imageData: imageData,
-                        videoData: videoData,
-                    };
+                await Promise.all([processImage, processVideo]);
 
-                    players.push(newPlayer);
-                    savePlayers(players);
-                    filterAndSort();
-                    addForm.reset();
-                    // Reset default values in form
-                    document.getElementById('fNationality').value = '🇰🇪 Kenya';
-                    document.getElementById('fFlag').value = '🇰🇪';
-                    document.getElementById('fEmoji').value = '⚡';
-                    document.getElementById('fAgeGroup').value = 'Under19';
-                    document.getElementById('fPosition').value = 'Midfielder';
-                    showToast(`✅ ${name} added successfully!`, 'success');
-                });
+                const newPlayer = {
+                    id: nextId++,
+                    name,
+                    ageGroup,
+                    position,
+                    nationality,
+                    flag,
+                    emoji,
+                    bio: bio || 'A talented player at La Salle Football Academy.',
+                    goals,
+                    assists,
+                    appearances,
+                    minutes,
+                    performanceGrade,
+                    coachComments: coachComments || '',
+                    imageData,
+                    videoData,
+                };
+
+                players.push(newPlayer);
+                await saveData();
+                filterAndSort();
+                addForm.reset();
+                document.getElementById('fNationality').value = '🇰🇪 Kenya';
+                document.getElementById('fFlag').value = '🇰🇪';
+                document.getElementById('fEmoji').value = '⚡';
+                document.getElementById('fAgeGroup').value = 'Under19';
+                document.getElementById('fPosition').value = 'Midfielder';
+                showToast(`✅ ${name} added successfully!`, 'success');
             }
 
-            // ----- ADMIN: DELETE PLAYER -----
-            function deletePlayer(id) {
+            // ============================================================
+            //  ADMIN: DELETE PLAYER
+            // ============================================================
+            async function deletePlayer(id) {
                 const player = players.find(p => p.id === id);
                 if (!player) return;
                 if (!confirm(`Delete "${player.name}" from the squad? This cannot be undone.`)) return;
 
                 players = players.filter(p => p.id !== id);
-                savePlayers(players);
+                await saveData();
                 filterAndSort();
                 showToast(`🗑️ ${player.name} removed.`, 'error');
             }
 
-            // ----- ADMIN TOGGLE -----
+            // ============================================================
+            //  ADMIN TOGGLE
+            // ============================================================
             function toggleAdmin() {
                 isAdmin = !isAdmin;
                 adminToggle.classList.toggle('active', isAdmin);
                 adminPanel.classList.toggle('open', isAdmin);
-                // Re-render to show/hide delete buttons
                 filterAndSort();
                 showToast(isAdmin ? '🔐 Admin mode activated' : '👤 Admin mode deactivated', isAdmin ? 'success' : '');
             }
 
-            // ----- EVENT LISTENERS -----
-            searchBtn.addEventListener('click', filterAndSort);
-            searchInput.addEventListener('keyup', (e) => {
-                if (e.key === 'Enter') filterAndSort();
-            });
-            positionFilter.addEventListener('change', filterAndSort);
-            ageGroupFilter.addEventListener('change', filterAndSort);
-            sortFilter.addEventListener('change', filterAndSort);
-
-            modalClose.addEventListener('click', closeModal);
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) closeModal();
-            });
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') closeModal();
-            });
-
-            adminToggle.addEventListener('click', toggleAdmin);
-
-            addForm.addEventListener('submit', addPlayer);
-
-            // Hamburger
-            const hamburger = document.getElementById('hamburger');
-            const navLinks = document.getElementById('navLinks');
-            hamburger.addEventListener('click', () => {
-                navLinks.classList.toggle('open');
-            });
-            navLinks.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    navLinks.classList.remove('open');
-                });
-            });
-
-            // ----- INIT -----
-            filterAndSort();
-
-            if (players.length === 0) {
-                players = [...DEFAULT_PLAYERS];
-                savePlayers(players);
+            // ============================================================
+            //  INIT
+            // ============================================================
+            async function init() {
+                await loadData();
                 filterAndSort();
+
+                // Event listeners
+                searchBtn.addEventListener('click', filterAndSort);
+                searchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') filterAndSort(); });
+                positionFilter.addEventListener('change', filterAndSort);
+                ageGroupFilter.addEventListener('change', filterAndSort);
+                sortFilter.addEventListener('change', filterAndSort);
+
+                modalClose.addEventListener('click', closeModal);
+                overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+                document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+                adminToggle.addEventListener('click', toggleAdmin);
+                addForm.addEventListener('submit', addPlayer);
+
+                const hamburger = document.getElementById('hamburger');
+                const navLinks = document.getElementById('navLinks');
+                hamburger.addEventListener('click', () => { navLinks.classList.toggle('open'); });
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => { navLinks.classList.remove('open'); });
+                });
+
+                console.log('🏆 La Salle Football Academy — Data synced, ready for parents.');
+                console.log(`📋 ${players.length} players loaded.`);
             }
 
-            console.log('🏆 La Salle Football Academy — Player Management System loaded.');
-            console.log(`📋 ${players.length} players loaded. Admin mode: ${isAdmin ? 'ON' : 'OFF'}`);
+            init();
 
         })();
     </script>
